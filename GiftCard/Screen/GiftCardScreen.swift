@@ -14,6 +14,7 @@ class GiftCardScreen: UIView {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .white
         table.register(GiftCardTableViewCell.self, forCellReuseIdentifier: GiftCardTableViewCell.idetenfier)
+        table.register(FilterTableViewCell.self, forCellReuseIdentifier: FilterTableViewCell.identifier)
         return table
     }()
 
@@ -43,8 +44,5 @@ class GiftCardScreen: UIView {
             self.tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-        
-        
-    
     
 }

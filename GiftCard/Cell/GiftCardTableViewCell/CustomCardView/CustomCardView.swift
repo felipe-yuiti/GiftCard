@@ -1,20 +1,19 @@
 //
-//  GiftCardTableViewCell.swift
+//  CustomCardView.swift
 //  GiftCard
 //
-//  Created by Felipe Yuiti on 02/09/22.
+//  Created by Felipe Yuiti on 03/09/22.
 //
 
 import UIKit
 
-class GiftCardTableViewCell: UITableViewCell {
+class CustomCardView: UIView {
     
     var containerLeadingConstraints: NSLayoutConstraint?
     var containerTopConstraints: NSLayoutConstraint?
     var containerTrailingConstraints: NSLayoutConstraint?
     var containerBottomConstraints: NSLayoutConstraint?
     
-    static var idetenfier: String = "GiftCardTableViewCell"
     
     lazy var cardContainerView: UIView = {
         let v = UIView()
@@ -27,19 +26,12 @@ class GiftCardTableViewCell: UITableViewCell {
         return v
     }()
     
-    lazy var viewImage: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .black
-        return v
-    }()
-    
     lazy var cardView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .clear
         v.layer.borderWidth = 1
-        v.layer.borderColor = UIColor.white.cgColor
+//        v.layer.borderColor = UIColor.white.cgColor
         v.layer.cornerRadius = 25
         return v
     }()
@@ -47,15 +39,14 @@ class GiftCardTableViewCell: UITableViewCell {
     lazy var overlayView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+//        v.backgroundColor = UIColor.green.withAlphaComponent(0.9)
         return v
     }()
     
-    lazy var titleImageButton: UIButton = {
-        let btn = UIButton()
+    lazy var titleImage: UIImageView = {
+        let btn = UIImageView()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .black
-        btn.setBackgroundImage(UIImage(named: "netflix"), for: .normal)
+//        btn.backgroundColor = .black
         return btn
     }()
     
@@ -63,8 +54,7 @@ class GiftCardTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 13, weight: .medium )
-        label.text = "Netflix Gift Card"
-        label.textColor = .white
+//        label.textColor = .white
         return label
     }()
     
@@ -72,8 +62,7 @@ class GiftCardTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        label.text = "R$ 30,00 - R$200,00"
-        label.textColor = .white
+//        label.textColor = .white
         return label
     }()
     
@@ -81,15 +70,17 @@ class GiftCardTableViewCell: UITableViewCell {
         let img = UIImageView()
         img.translatesAutoresizingMaskIntoConstraints = false
         img.contentMode = .scaleAspectFit
-        img.image = UIImage(named: "netflix-1")?.withRenderingMode(.alwaysTemplate).withTintColor(.white)
-        img.backgroundColor = UIColor(red: 0.90, green: 0.04, blue: 0.08, alpha: 0.2)
+        img.layer.masksToBounds = true
+//        img.image = UIImage("")?.withRenderingMode(.alwaysTemplate).withTintColor(.white)
+//        img.backgroundColor = UIColor(red: 0.90, green: 0.04, blue: 0.08, alpha: 0.2)
+      
         return img
     }()
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.setupView()
-        self.setupConstraints()
+        self.setupConstraints() 
     }
     
     required init?(coder: NSCoder) {
@@ -97,12 +88,19 @@ class GiftCardTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
-        self.contentView.addSubview(self.cardContainerView)
+        self.addSubview(self.cardContainerView)
         self.cardContainerView.addSubview(self.overlayView)
-        self.cardContainerView.addSubview(self.titleImageButton)
+        self.cardContainerView.addSubview(self.titleImage)
         self.cardContainerView.addSubview(self.subTitleLabel)
         self.cardContainerView.addSubview(self.priceLabel)
         self.cardContainerView.addSubview(self.cardImage)
+    }
+    
+    public func setupCell(data: CardModel) {
+        self.titleImage.image = UIImage(named: data.titleCard ?? "")
+        self.subTitleLabel.text = data.subTitleCard
+        self.priceLabel.text = data.priceCard
+        self.cardImage.image = UIImage(named: data.imageCard ?? "")
     }
     
     private func setupConstraints() {
@@ -122,12 +120,12 @@ class GiftCardTableViewCell: UITableViewCell {
         self.overlayView.pin(to: self.cardContainerView)
         
         NSLayoutConstraint.activate([
-            self.titleImageButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor, constant: 28),
-            self.titleImageButton.leadingAnchor.constraint(equalTo: self.cardContainerView.leadingAnchor, constant: 28),
-            self.titleImageButton.widthAnchor.constraint(equalToConstant: 100),
-            self.titleImageButton.heightAnchor.constraint(equalToConstant: 30),
+            self.titleImage.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor, constant: 28),
+            self.titleImage.leadingAnchor.constraint(equalTo: self.cardContainerView.leadingAnchor, constant: 28),
+            self.titleImage.widthAnchor.constraint(equalToConstant: 100),
+            self.titleImage.heightAnchor.constraint(equalToConstant: 30),
             
-            self.subTitleLabel.topAnchor.constraint(equalTo: self.titleImageButton.bottomAnchor, constant: 24),
+            self.subTitleLabel.topAnchor.constraint(equalTo: self.titleImage.bottomAnchor, constant: 24),
             self.subTitleLabel.leadingAnchor.constraint(equalTo: self.cardContainerView.leadingAnchor, constant: 28),
             self.subTitleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
@@ -141,5 +139,4 @@ class GiftCardTableViewCell: UITableViewCell {
             self.cardImage.heightAnchor.constraint(equalToConstant: 222),
         ])
     }
-    
 }
